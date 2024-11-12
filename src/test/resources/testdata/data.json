@@ -1,0 +1,20 @@
+{
+  "testData": {
+    "Verify add to cart": {
+      "QA": {
+        "productName": "ZARA COAT 3"
+      },
+      "UAT": {
+        "productName": "ZARA COAT 3"
+      }
+    },
+    "Verify remove from cart": {
+      "QA": {
+        "productName": "ZARA COAT 3"
+      },
+      "UAT": {
+        "productName": "ZARA COAT 3"
+      }
+    }
+  }
+}
