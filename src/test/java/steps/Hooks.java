@@ -10,11 +10,13 @@ import io.restassured.response.Response;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.asserts.SoftAssert;
 import pojos.LoginPayload;
+import utils.ConfigReader;
 import utils.ExcelUtil;
 import utils.RestUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static base.DataMap.dataMap;
 
@@ -24,15 +26,21 @@ public class Hooks extends UIActions {
     private SoftAssert softAssert;
     private static ThreadLocal threadLocal = new ThreadLocal();
     private static Map<String, Map<String, Object>> parentDataMap;
+    static String browser;
     @BeforeAll
     public static void before_all(){
         String env = System.getProperty("env") == null ? "QA": System.getProperty("env");
         parentDataMap = ExcelUtil.getExcelData(env+"/TestData.xlsx", "Sheet1");
+        browser = ConfigReader.getBrowserType();
     }
 
     @Before(order = 0)
     public void initializeTest(Scenario scenario){
-        DriverFactory.initializeDriver("chrome", prop.getProperty("url"), false);
+        switch (browser){
+            case "chrome"-> DriverFactory.initializeDriver("chrome", prop.getProperty("url"), false);
+            case "firefox" -> DriverFactory.initializeDriver("firefox", prop.getProperty("url"), false);
+            case "edge"-> DriverFactory.initializeDriver("edge", prop.getProperty("url"), false);
+        }
         softAssert = new SoftAssert();
         threadLocal.set(softAssert);
         dataMap.set(parentDataMap.get(scenario.getName()));
