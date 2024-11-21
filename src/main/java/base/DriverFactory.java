@@ -9,6 +9,8 @@ import utils.Constants;
 
 import java.time.Duration;
 
+import static base.UIActions.prop;
+
 public class DriverFactory {
     public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
     public static void initializeDriver(String browserName, String url, boolean headless) {
@@ -18,7 +20,7 @@ public class DriverFactory {
             case "edge" -> new EdgeDriverManager();
             default -> throw new IllegalArgumentException("Wrong browser given : " + browserName);
         };
-        tlDriver.set(browser.createDriver(headless));
+        tlDriver.set(browser.createDriver(prop.getProperty("executionEnv"), headless));
         getDriver().manage().deleteAllCookies();
         getDriver().manage().window().maximize();
         getDriver().get(url);
